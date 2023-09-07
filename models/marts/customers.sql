@@ -8,13 +8,13 @@ customers as (
 
 orders_table as (
 
-    select * from {{ ref('jaffle_shop_mesh_platform', 'orders') }}
+    select * from {{ ref('jaffle_shop_mesh_finance', 'orders') }}
 
 ),
 
 order_items_table as (
 
-    select * from {{ ref('jaffle_shop_mesh_platform', 'order_items') }}
+    select * from {{ ref('jaffle_shop_mesh_finance', 'order_items') }}
 ),
 
 order_summary as (
@@ -30,9 +30,9 @@ order_summary as (
         sum(orders.order_total) as lifetime_spend
 
     from orders_table as orders
-    
+
     left join order_items_table as order_items on orders.order_id = order_items.order_id
-    
+
     group by 1
 
 ),
