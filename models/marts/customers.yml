@@ -1,0 +1,40 @@
+models:
+  - name: customers
+    description: Customer overview data mart, offering key details for each unique customer. One row per customer.
+    access: protected
+    group: marketing
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: customer_id
+        data_type: text
+        description: The unique key of the orders mart.
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        data_type: text
+        description: Customers' full name.
+      - name: count_lifetime_orders
+        data_type: number
+        description: Total number of orders a customer has ever placed.
+      - name: first_ordered_at
+        data_type: timestamp_ntz
+        description: The timestamp when a customer placed their first order.
+      - name: last_ordered_at
+        data_type: timestamp_ntz
+        description: The timestamp of a customer's most recent order.
+      - name: lifetime_spend_pretax
+        data_type: number
+        description: The sum of all the pre-tax subtotals of every order a customer has placed.
+      - name: lifetime_spend
+        data_type: number
+        description: The sum of all the order totals (including tax) that a customer has ever placed.
+      - name: customer_type
+        data_type: text
+        description: Options are 'new' or 'returning', indicating if a customer has ordered more than once or has only placed their first order to date.
+        tests:
+          - accepted_values:
+              values: ["new", "returning"]
+
