@@ -2,25 +2,25 @@ with
 
 customers as (
 
-    select * from {{ ref('jaffle_shop_mesh_platform', 'stg_customers') }}
+    select * from {{ ref('stg_customers') }}
 
 ),
 
 orders_table as (
 
-    select * from {{ ref('jaffle_shop_mesh_finance', 'orders') }}
+    select * from {{ ref('orders') }}
 
 ),
 
 order_items_table as (
 
-    select * from {{ ref('jaffle_shop_mesh_finance', 'order_items') }}
+    select * from {{ ref('order_items') }}
 ),
 
 order_summary as (
 
     select
-        customer_id,
+        orders.customer_id,
 
         count(distinct orders.order_id) as count_lifetime_orders,
         count(distinct orders.order_id) > 1 as is_repeat_buyer,
@@ -31,7 +31,9 @@ order_summary as (
 
     from orders_table as orders
 
-    left join order_items_table as order_items on orders.order_id = order_items.order_id
+    left join
+        order_items_table as order_items
+        on orders.order_id = order_items.order_id
 
     group by 1
 
